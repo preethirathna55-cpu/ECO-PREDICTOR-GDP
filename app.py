@@ -12,7 +12,7 @@ return pd.read_csv("final_structured_dataset.csv")
 
 @st.cache_resource
 def load_model():
-return pickle.load(open("model.pkl","rb"))
+return pickle.load(open("model.pkl", "rb"))
 
 df = load_data()
 model = load_model()
@@ -44,8 +44,10 @@ col3.metric("Growth %", f"{growth:.2f}%")
 # ---------------- TREND ----------------
 
 st.subheader("📈 GDP Trend")
+
 temp = filtered.sort_values('Year')
 temp['Year'] = temp['Year'].astype(str)
+
 st.line_chart(temp.set_index('Year')['GDP'])
 
 # ---------------- YEAR COMPARISON ----------------
@@ -54,7 +56,7 @@ st.subheader("📊 Compare Years")
 
 years = sorted(filtered['Year'].unique())
 y1 = st.selectbox("Year 1", years)
-y2 = st.selectbox("Year 2", years, index=len(years)-1)
+y2 = st.selectbox("Year 2", years, index=len(years) - 1)
 
 v1 = filtered[filtered['Year'] == y1]['GDP'].values[0]
 v2 = filtered[filtered['Year'] == y2]['GDP'].values[0]
@@ -113,7 +115,7 @@ st.write("Improve healthcare")
 
 st.subheader("🤖 Predict GDP")
 
-# 5 inputs (UI)
+# UI inputs (5 inputs shown)
 
 inflation = st.slider("Inflation (%)", 0.0, 20.0, 5.0)
 unemployment = st.slider("Unemployment (%)", 0.0, 25.0, 6.0)
@@ -121,9 +123,11 @@ life_exp = st.slider("Life Expectancy", 40.0, 90.0, 70.0)
 education = st.slider("Education (%)", 0.0, 100.0, 50.0)
 investment = st.slider("Investment (% GDP)", 0.0, 50.0, 25.0)
 
+# Prediction button
+
 if st.button("🚀 Predict GDP"):
 try:
-# Only 3 inputs used internally (model limitation)
+# Model uses only 3 inputs
 data = np.array([[inflation, unemployment, life_exp]])
 data = sm.add_constant(data)
 
@@ -135,4 +139,4 @@ except Exception as e:
     st.error(f"Error: {e}")
 ```
 
-st.info("Note: Prediction currently uses core indicators (Inflation, Unemployment, Life Expectancy).")
+st.info("Note: Prediction uses core indicators (Inflation, Unemployment, Life Expectancy).")
