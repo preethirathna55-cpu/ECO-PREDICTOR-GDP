@@ -112,11 +112,9 @@ elif worst == "Health":
     st.write("Improve healthcare")
 
 # ---------------- PREDICTION ----------------
-
 st.subheader("🤖 Predict GDP")
 
 # UI inputs (5 inputs shown)
-
 inflation = st.slider("Inflation (%)", 0.0, 20.0, 5.0)
 unemployment = st.slider("Unemployment (%)", 0.0, 25.0, 6.0)
 life_exp = st.slider("Life Expectancy", 40.0, 90.0, 70.0)
@@ -124,19 +122,16 @@ education = st.slider("Education (%)", 0.0, 100.0, 50.0)
 investment = st.slider("Investment (% GDP)", 0.0, 50.0, 25.0)
 
 # Prediction button
-
 if st.button("🚀 Predict GDP"):
     try:
-# Model uses only 3 inputs
         data = np.array([[inflation, unemployment, life_exp]])
         data = sm.add_constant(data)
 
-```
         pred = model.predict(data)
 
         st.success(f"💰 Predicted GDP: {pred[0]:.2f}")
+
     except Exception as e:
         st.error(f"Error: {e}")
-```
 
 st.info("Note: Prediction uses core indicators (Inflation, Unemployment, Life Expectancy).")
