@@ -8,11 +8,11 @@ import statsmodels.api as sm
 
 @st.cache_data
 def load_data():
-return pd.read_csv("final_structured_dataset.csv")
+    return pd.read_csv("final_structured_dataset.csv")
 
 @st.cache_resource
 def load_model():
-return pickle.load(open("model.pkl", "rb"))
+    return pickle.load(open("model.pkl", "rb"))
 
 df = load_data()
 model = load_model()
@@ -64,9 +64,9 @@ v2 = filtered[filtered['Year'] == y2]['GDP'].values[0]
 change = ((v2 - v1) / v1) * 100
 
 if change > 0:
-st.success(f"📈 Increase: {change:.2f}%")
+    st.success(f"📈 Increase: {change:.2f}%")
 else:
-st.error(f"📉 Decrease: {abs(change):.2f}%")
+s    t.error(f"📉 Decrease: {abs(change):.2f}%")
 
 # ---------------- SECTOR ----------------
 
@@ -99,17 +99,17 @@ st.error(f"⚠ Weak: {worst}")
 st.subheader("📌 Recommendation")
 
 if worst == "Unemployment":
-st.write("Focus on job creation")
+    st.write("Focus on job creation")
 elif worst == "Inflation":
-st.write("Control inflation")
+    st.write("Control inflation")
 elif worst == "Investment":
-st.write("Increase investment")
+    st.write("Increase investment")
 elif worst == "Trade":
-st.write("Improve trade")
+    st.write("Improve trade")
 elif worst == "Education":
-st.write("Improve education")
+    st.write("Improve education")
 elif worst == "Health":
-st.write("Improve healthcare")
+    st.write("Improve healthcare")
 
 # ---------------- PREDICTION ----------------
 
@@ -128,8 +128,8 @@ investment = st.slider("Investment (% GDP)", 0.0, 50.0, 25.0)
 if st.button("🚀 Predict GDP"):
 try:
 # Model uses only 3 inputs
-data = np.array([[inflation, unemployment, life_exp]])
-data = sm.add_constant(data)
+    data = np.array([[inflation, unemployment, life_exp]])
+    data = sm.add_constant(data)
 
 ```
     pred = model.predict(data)
