@@ -94,32 +94,23 @@ worst = score_df.iloc[-1]['Sector']
 st.success(f"🔥 Strong: {best}")
 st.error(f"⚠ Weak: {worst}")
 
-# ---------------- RECOMMENDATION ----------------
+if st.button("🚀 Predict GDP"):
+    try:
+        # send ALL 8 inputs in correct order
+        data = np.array([[inflation, unemployment, life_exp, education, gov, investment, trade, pop]])
+        
+        # add constant (makes it 9 columns)
+        data = sm.add_constant(data)
 
-st.subheader("📌 Recommendation")
+        pred = model.predict(data)
 
-if worst == "Unemployment":
-    st.write("Focus on job creation")
-elif worst == "Inflation":
-    st.write("Control inflation")
-elif worst == "Investment":
-    st.write("Increase investment")
-elif worst == "Trade":
-    st.write("Improve trade")
-elif worst == "Education":
-    st.write("Improve education")
-elif worst == "Health":
-    st.write("Improve healthcare")
+        st.success(f"💰 Predicted GDP: {pred[0]:.2f}")
 
-# ---------------- PREDICTION ----------------
-st.subheader("🤖 Predict GDP")
-
-# UI inputs (5 inputs shown)
-inflation = st.slider("Inflation (%)", 0.0, 20.0, 5.0)
-unemployment = st.slider("Unemployment (%)", 0.0, 25.0, 6.0)
-life_exp = st.slider("Life Expectancy", 40.0, 90.0, 70.0)
-education = st.slider("Education (%)", 0.0, 100.0, 50.0)
-investment = st.slider("Investment (% GDP)", 0.0, 50.0, 25.0)
+    except Exception as e:
+        st.error(f"Error: {e}")
+gov = st.slider("Government Spending", 0.0, 100.0, 50.0)
+trade = st.slider("Trade", 0.0, 100.0, 50.0)
+pop = st.slider("Population Growth", 0.0, 5.0, 2.0)
 
 # Prediction button
 if st.button("🚀 Predict GDP"):
