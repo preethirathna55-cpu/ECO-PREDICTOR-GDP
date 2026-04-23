@@ -8,11 +8,11 @@ import statsmodels.api as sm
 
 @st.cache_data
 def load_data():
-    return pd.read_csv("final_structured_dataset.csv")
+return pd.read_csv("final_structured_dataset.csv")
 
 @st.cache_resource
 def load_model():
-    return pickle.load(open("model.pkl", "rb"))
+return pickle.load(open("model.pkl", "rb"))
 
 df = load_data()
 model = load_model()
@@ -56,7 +56,7 @@ st.subheader("📊 Compare Years")
 
 years = sorted(filtered['Year'].unique())
 y1 = st.selectbox("Year 1", years)
-y2 = st.selectbox("Year 2", years, index=len(years) - 1)
+y2 = st.selectbox("Year 2", years, index=len(years)-1)
 
 v1 = filtered[filtered['Year'] == y1]['GDP'].values[0]
 v2 = filtered[filtered['Year'] == y2]['GDP'].values[0]
@@ -64,9 +64,9 @@ v2 = filtered[filtered['Year'] == y2]['GDP'].values[0]
 change = ((v2 - v1) / v1) * 100
 
 if change > 0:
-    st.success(f"📈 Increase: {change:.2f}%")
+st.success(f"📈 Increase: {change:.2f}%")
 else:
-    st.error(f"📉 Decrease: {abs(change):.2f}%")
+st.error(f"📉 Decrease: {abs(change):.2f}%")
 
 # ---------------- SECTOR ----------------
 
@@ -94,35 +94,35 @@ worst = score_df.iloc[-1]['Sector']
 st.success(f"🔥 Strong: {best}")
 st.error(f"⚠ Weak: {worst}")
 
-if st.button("🚀 Predict GDP"):
-    try:
-        # send ALL 8 inputs in correct order
-        data = np.array([[inflation, unemployment, life_exp, education, gov, investment, trade, pop]])
-        
-        # add constant (makes it 9 columns)
-        data = sm.add_constant(data)
+# ---------------- PREDICTION ----------------
 
-        pred = model.predict(data)
+st.subheader("🤖 Predict GDP")
 
-        st.success(f"💰 Predicted GDP: {pred[0]:.2f}")
+# INPUTS (ALL defined BEFORE button)
 
-    except Exception as e:
-        st.error(f"Error: {e}")
+inflation = st.slider("Inflation (%)", 0.0, 20.0, 5.0)
+unemployment = st.slider("Unemployment (%)", 0.0, 25.0, 6.0)
+life_exp = st.slider("Life Expectancy", 40.0, 90.0, 70.0)
+education = st.slider("Education (%)", 0.0, 100.0, 50.0)
 gov = st.slider("Government Spending", 0.0, 100.0, 50.0)
+investment = st.slider("Investment (% GDP)", 0.0, 50.0, 25.0)
 trade = st.slider("Trade", 0.0, 100.0, 50.0)
 pop = st.slider("Population Growth", 0.0, 5.0, 2.0)
 
-# Prediction button
-if st.button("🚀 Predict GDP"):
-    try:
-        data = np.array([[inflation, unemployment, life_exp]])
-        data = sm.add_constant(data)
+# SINGLE BUTTON (no duplicate)
 
-        pred = model.predict(data)
+if st.button("🚀 Predict GDP", key="predict_main"):
+try:
+data = np.array([[inflation, unemployment, life_exp, education, gov, investment, trade, pop]])
+data = sm.add_constant(data)
 
-        st.success(f"💰 Predicted GDP: {pred[0]:.2f}")
+```
+    pred = model.predict(data)
 
-    except Exception as e:
-        st.error(f"Error: {e}")
+    st.success(f"💰 Predicted GDP: {pred[0]:.2f}")
 
-st.info("Note: Prediction uses core indicators (Inflation, Unemployment, Life Expectancy).")
+except Exception as e:
+    st.error(f"Error: {e}")
+```
+
+st.info("Prediction uses all economic indicators.")
