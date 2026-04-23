@@ -66,7 +66,7 @@ change = ((v2 - v1) / v1) * 100
 if change > 0:
     st.success(f"📈 Increase: {change:.2f}%")
 else:
-s    t.error(f"📉 Decrease: {abs(change):.2f}%")
+    st.error(f"📉 Decrease: {abs(change):.2f}%")
 
 # ---------------- SECTOR ----------------
 
