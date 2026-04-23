@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
-import statsmodels.api as sm
 
 # ---------------- LOAD DATA ----------------
 @st.cache_data
@@ -43,6 +42,7 @@ st.subheader("📈 GDP Trend")
 
 temp = filtered.sort_values('Year')
 temp['Year'] = temp['Year'].astype(str)
+
 st.line_chart(temp.set_index('Year')['GDP'])
 
 # ---------------- YEAR COMPARISON ----------------
@@ -90,7 +90,6 @@ st.error(f"⚠ Weak: {worst}")
 # ---------------- PREDICTION ----------------
 st.subheader("🤖 Predict GDP")
 
-# INPUTS
 inflation = st.slider("Inflation (%)", 0.0, 20.0, 5.0)
 unemployment = st.slider("Unemployment (%)", 0.0, 25.0, 6.0)
 life_exp = st.slider("Life Expectancy", 40.0, 90.0, 70.0)
@@ -100,16 +99,11 @@ investment = st.slider("Investment (% GDP)", 0.0, 50.0, 25.0)
 trade = st.slider("Trade", 0.0, 100.0, 50.0)
 pop = st.slider("Population Growth", 0.0, 5.0, 2.0)
 
-# BUTTON (only one!)
 if st.button("🚀 Predict GDP"):
     try:
-        data = np.array([[inflation, unemployment, life_exp, education, gov, investment, trade, pop]])
-        data = sm.add_constant(data)
-
+        data = np.array([[1, inflation, unemployment, life_exp, education, gov, investment, trade, pop]])
         pred = model.predict(data)
-
         st.success(f"💰 Predicted GDP: {pred[0]:.2f}")
-
     except Exception as e:
         st.error(f"Error: {e}")
 
