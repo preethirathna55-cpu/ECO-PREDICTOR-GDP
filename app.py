@@ -126,17 +126,17 @@ investment = st.slider("Investment (% GDP)", 0.0, 50.0, 25.0)
 # Prediction button
 
 if st.button("🚀 Predict GDP"):
-try:
+    try:
 # Model uses only 3 inputs
-    data = np.array([[inflation, unemployment, life_exp]])
-    data = sm.add_constant(data)
+        data = np.array([[inflation, unemployment, life_exp]])
+        data = sm.add_constant(data)
 
 ```
-    pred = model.predict(data)
+        pred = model.predict(data)
 
-    st.success(f"💰 Predicted GDP: {pred[0]:.2f}")
-except Exception as e:
-    st.error(f"Error: {e}")
+        st.success(f"💰 Predicted GDP: {pred[0]:.2f}")
+    except Exception as e:
+        st.error(f"Error: {e}")
 ```
 
 st.info("Note: Prediction uses core indicators (Inflation, Unemployment, Life Expectancy).")
